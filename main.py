@@ -7,14 +7,14 @@ app = FastAPI()
 
 
 class ModelName(str, Enum):
-    alexnet = "alexnet"
-    resnet = "resnet"
-    lenet = "lenet"
+    ALEXNET = "alexnet"
+    RESNET = "resnet"
+    LENET = "lenet"
     
     
 @app.get("/models/{model_name}")
 async def get_model(model_name: ModelName):
-    if model_name is ModelName.alexnet:
+    if model_name is ModelName.ALEXNET:
         return {"model_name": model_name, "message": "Deep Learning FTW!"}
 
     if model_name.value == "lenet":
@@ -40,4 +40,8 @@ async def read_user_me():
 @app.get("/users/{user_id}")
 async def read_user(user_id: str):
     return {"user_id": user_id}
+
+
+# if __name__ == '__main__':
+#     uvicorn.run('main:app')
 
