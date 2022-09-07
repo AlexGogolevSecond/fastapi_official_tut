@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 from enum import Enum
+from pydantic import BaseModel
 
 
 app = FastAPI()
@@ -42,7 +43,7 @@ async def root():
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: str, needy: str, q: str | None = None, short: bool = False):
-    item = {"item_id": item_id}
+    item = {"item_id": item_id, "needy": needy}
     if q:
         item.update({"q": q})
     if not short:
