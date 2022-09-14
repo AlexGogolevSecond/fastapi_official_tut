@@ -5,9 +5,25 @@ from pydantic import Required
 app = FastAPI()
 
 
+@app.get("/items8/")
+async def read_items(q: list[str] | None = Query(default=None)):
+    """тут показано, что можно передать список query-параметров с одним именем; в q будет список"""
+    query_items = {"q": q}
+    return query_items
+
+
+@app.get("/items7/")
+async def read_items(q: str = Query(min_length=3)):
+    """если некомфортно использовать ... - можно использовать Required - НО по большому счёту можно тупо не использовать default"""
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+
+
 @app.get("/items6/")
 async def read_items(q: str = Query(default=Required, min_length=3)):
-    """если некомфортно использовать ... - можно использовать Required"""
+    """если некомфортно использовать ... - можно использовать Required - НО по большому счёту можно тупо не использовать default"""
     results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
     if q:
         results.update({"q": q})
