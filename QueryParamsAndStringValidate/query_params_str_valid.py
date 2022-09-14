@@ -7,7 +7,9 @@ app = FastAPI()
 
 @app.get("/items8/")
 async def read_items(q: list[str] | None = Query(default=None)):
-    """тут показано, что можно передать список query-параметров с одним именем; в q будет список"""
+    """тут показано, что можно передать список query-параметров с одним именем; в q будет список
+    в этом случае обязательно использовать Query
+    """
     query_items = {"q": q}
     return query_items
 
