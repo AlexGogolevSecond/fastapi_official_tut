@@ -1,6 +1,17 @@
 from fastapi import FastAPI, Query
+from pydantic import Required
+
 
 app = FastAPI()
+
+
+@app.get("/items6/")
+async def read_items(q: str = Query(default=Required, min_length=3)):
+    """если некомфортно использовать ... - можно использовать Required"""
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
 
 
 @app.get("/items5/")
