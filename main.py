@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 import uvicorn
 from enum import Enum
 from pydantic import BaseModel
@@ -14,6 +14,42 @@ class Item(BaseModel):
     description: str | None = None
     price: float
     tax: float | None = None
+
+
+class User(BaseModel):
+    username: str
+    full_name: str | None = None
+
+
+@app.put("/items2/{item_id}")
+async def update_item(item_id: int, item: Item = Body(embed=True)):
+    results = {"item_id": item_id, "item": item}
+    return results
+
+
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item, user: User, importance: int = Body(), q: str | None = None):
+    results = {"item_id": item_id, "item": item, "user": user, "importance": importance}
+    if q:
+        results.update({'q': q})
+    return results
+
+
+@app.post("/items2/{item_id}")
+async def create_item(item_id: int, item: Item, q: str | None = None):
+    #result = {"item_id": item_id, **item.dict()}
+    result = {"item_id": item_id, "item": item}
+    if q:
+        result.update({"q": q})
+    return result
+
+
+@app.post("/items/{item_id}")
+async def create_item(item_id: int, item: Item, q: str | None = None):
+    result = {"item_id": item_id, **item.dict()}
+    if q:
+        result.update({"q": q})
+    return result
 
 
 @app.post("/items/")
