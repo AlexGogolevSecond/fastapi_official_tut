@@ -127,6 +127,6 @@ async def read_user(user_id: str):
     return {"user_id": user_id}
 
 
-# if __name__ == '__main__':
-#     uvicorn.run('main:app')
+if __name__ == '__main__':
+    uvicorn.run('main:app')
 

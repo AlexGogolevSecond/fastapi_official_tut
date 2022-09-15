@@ -1,8 +1,29 @@
 from fastapi import FastAPI, Query
 from pydantic import Required
+import uvicorn
 
 
 app = FastAPI()
+
+
+@app.get("/items11/")
+async def read_items(q: list = Query(default=[])):
+    query_items = {"q": q}
+    return query_items
+
+
+@app.get("/items10/")
+async def read_items(q: list[str] = Query(default=["foo", "bar"])):
+    query_items = {"q": q}
+    return query_items
+
+
+@app.get("/items9/")
+async def read_items(q: str = Query(default=Required, min_length=3)):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
 
 
 @app.get("/items8/")
@@ -78,3 +99,7 @@ async def read_items(q: str | None):
     if q:
         results.update({"q": q})
     return results
+
+
+if __name__ == '__main__':
+    uvicorn.run('query_params_str_valid:app')
