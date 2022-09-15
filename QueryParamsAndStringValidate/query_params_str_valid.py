@@ -1,9 +1,31 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Path, Body
 from pydantic import Required
 import uvicorn
 
 
 app = FastAPI()
+
+
+@app.get("/items15/{item_id}")
+async def read_items(
+    item_id: int = Path(title="The ID of the item to get", gt=0, le=1000),
+    q: str = Path(),):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+
+
+@app.get("/items14/{item_id}")
+async def read_items(
+    *,
+    item_id: int = Path(title="The ID of the item to get", gt=0, le=1000),
+    q: str,
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
 
 
 @app.get("/items13/")
