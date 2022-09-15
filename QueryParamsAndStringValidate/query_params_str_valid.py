@@ -6,6 +6,31 @@ import uvicorn
 app = FastAPI()
 
 
+@app.get("/items13/")
+async def read_items(
+    q: str
+    | None = Query(
+        default=None,
+        title="Query string",
+        description="Query string for the items to search in the database that have a good match",
+        min_length=3,
+    )
+):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+
+
+@app.get("/items12/")
+async def read_items(q: str | None = Query(default=None, title="Query string", min_length=3)):
+    """added title"""
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+
+
 @app.get("/items11/")
 async def read_items(q: list = Query(default=[])):
     query_items = {"q": q}
