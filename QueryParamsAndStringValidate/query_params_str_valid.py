@@ -6,6 +6,19 @@ import uvicorn
 app = FastAPI()
 
 
+@app.get("/items17/{item_id}")
+async def read_items(q: str, item_id: int = Path(title="The ID of the item to get")):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+
+
+@app.get("/items16/{item_id}")
+async def read_items(item_id: str, q: str | None = 'sdf'):
+    return {'item_id': item_id}
+
+
 @app.get("/items15/{item_id}")
 async def read_items(
     item_id: int = Path(title="The ID of the item to get", gt=0, le=1000),
